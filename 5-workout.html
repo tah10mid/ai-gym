@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GYM_AI | Precision Workout Plan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Global Film Grain & Texture */
+        .film-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(198, 244, 50, 0.15);
+        }
+
+        .neon-glow-lime {
+            box-shadow: 0 0 32px -8px rgba(198, 244, 50, 0.15);
+        }
+
+        .radial-bleed {
+            background: radial-gradient(circle at 50% 50%, rgba(198, 244, 50, 0.08) 0%, transparent 70%);
+        }
+
+        /* Custom Scrollbar for Horizontal Timeline */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body {
+            background-color: #0A0A0B;
+            color: #e5e2e3;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#556d00",
+                        "on-surface-variant": "#c4c9ae",
+                        "inverse-primary": "#506600",
+                        "surface-tint": "#aad600",
+                        "primary-fixed": "#c5f331",
+                        "surface-bright": "#3a393a",
+                        "inverse-surface": "#e5e2e3",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface": "#131314",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#313031",
+                        "surface-dim": "#131314",
+                        "on-tertiary-container": "#636565",
+                        "on-primary-fixed": "#161f00",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary": "#213600",
+                        "primary-fixed-dim": "#aad600",
+                        "surface-variant": "#353436",
+                        "on-secondary-fixed": "#121f00",
+                        "background": "#131314",
+                        "outline": "#8e937a",
+                        "surface-container-lowest": "#0e0e0f",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "primary-container": "#c5f331",
+                        "secondary-fixed": "#b2f746",
+                        "secondary-fixed-dim": "#98da27",
+                        "surface-container-highest": "#353436",
+                        "on-background": "#e5e2e3",
+                        "surface-container": "#201f20",
+                        "on-surface": "#e5e2e3",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1c1b1c",
+                        "primary": "#ffffff",
+                        "on-tertiary": "#2f3131",
+                        "tertiary-container": "#e2e2e2",
+                        "outline-variant": "#444934",
+                        "secondary-container": "#83c300",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-primary": "#283500",
+                        "surface-container-high": "#2a2a2b",
+                        "secondary": "#9ddf2e",
+                        "on-secondary-container": "#304b00",
+                        "on-primary-fixed-variant": "#3b4d00",
+                        "tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#334f00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "3xl": "64px",
+                        "2xl": "48px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "container-margin": "24px",
+                        "md": "16px",
+                        "unit": "8px",
+                        "lg": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "stat-display": ["JetBrains Mono"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Anton"],
+                        "headline-xl-mobile": ["Anton"],
+                        "headline-md": ["Anton"],
+                        "headline-xl": ["Anton"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "stat-display": ["32px", {"lineHeight": "32px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["80px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["36px", {"lineHeight": "36px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "28px", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "48px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface antialiased overflow-x-hidden">
+<div class="film-grain"></div>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-secondary/15 flex justify-between items-center px-container-margin py-md">
+<div class="font-headline-md text-headline-md text-secondary tracking-tighter uppercase">GYM_AI</div>
+<div class="flex items-center gap-xl">
+<nav class="hidden md:flex gap-lg">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Upload</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Review</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold" href="#">Plan</a>
+</nav>
+<span class="material-symbols-outlined text-secondary cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-margin max-w-7xl mx-auto relative min-h-screen">
+<!-- Radial Background Bleed -->
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full radial-bleed pointer-events-none -z-10"></div>
+<!-- Section Header -->
+<div class="mb-xl">
+<h1 class="font-headline-xl text-headline-xl md:text-display-lg uppercase leading-none text-primary mb-sm">Training Matrix</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Hyper-personalized 8-week cycle generated via biomechanical analysis. Optimized for hypertrophy and neural strength adaptations.</p>
+</div>
+<!-- 8-Week Timeline -->
+<section class="mb-3xl">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-md text-headline-md uppercase text-secondary">8-Week Timeline</h2>
+<div class="px-md py-xs bg-secondary/10 border border-secondary/20 rounded-full">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Macrocycle: Alpha-1</span>
+</div>
+</div>
+<div class="flex overflow-x-auto gap-md pb-lg no-scrollbar snap-x">
+<!-- Week 1-3 Muted -->
+<div class="min-w-[200px] flex-1 glass-card p-lg rounded-xl opacity-40 snap-start">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Week 01-02</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-xs">Foundation</h3>
+<p class="text-xs text-on-surface-variant mt-sm">Biomechanical recalibration &amp; GPP.</p>
+</div>
+<div class="min-w-[200px] flex-1 glass-card p-lg rounded-xl opacity-40 snap-start">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Week 03</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-xs">Loading</h3>
+<p class="text-xs text-on-surface-variant mt-sm">Volume accumulation phase.</p>
+</div>
+<!-- Active Week -->
+<div class="min-w-[240px] flex-1 glass-card p-lg rounded-xl border-secondary/60 neon-glow-lime snap-center relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-secondary px-sm py-1">
+<span class="text-[10px] font-bold text-black uppercase tracking-tighter">Active</span>
+</div>
+<span class="font-label-sm text-label-sm uppercase text-secondary">Week 04</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-xs">Hypertrophy</h3>
+<p class="text-xs text-on-surface-variant mt-sm">Mechanical tension peak. Focus on eccentric control.</p>
+<div class="mt-lg w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[65%]"></div>
+</div>
+</div>
+<!-- Future Weeks -->
+<div class="min-w-[200px] flex-1 glass-card p-lg rounded-xl opacity-40 snap-start">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Week 05</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-xs">Intensify</h3>
+<p class="text-xs text-on-surface-variant mt-sm">Transition to heavy loading.</p>
+</div>
+<div class="min-w-[200px] flex-1 glass-card p-lg rounded-xl opacity-40 snap-start">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Week 06-07</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-xs">Strength</h3>
+<p class="text-xs text-on-surface-variant mt-sm">Neural drive &amp; 1RM preparation.</p>
+</div>
+<div class="min-w-[200px] flex-1 glass-card p-lg rounded-xl opacity-40 snap-start">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Week 08</span>
+<h3 class="font-headline-md text-headline-md text-primary mt-xs">Peak</h3>
+<p class="text-xs text-on-surface-variant mt-sm">Tapering and performance testing.</p>
+</div>
+</div>
+</section>
+<!-- Daily Split Cards -->
+<section>
+<div class="mb-lg">
+<h2 class="font-headline-md text-headline-md uppercase text-secondary mb-xs">Daily Performance Split</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Phase: Hypertrophy Development</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Day 1 Card -->
+<div class="glass-card rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">Day 01</span>
+<h4 class="font-headline-md text-headline-md text-primary">Posterior Chain</h4>
+</div>
+<span class="material-symbols-outlined text-secondary/40" data-icon="fitness_center">fitness_center</span>
+</div>
+<div class="space-y-sm">
+<div class="grid grid-cols-12 text-[10px] font-bold text-on-surface-variant uppercase tracking-wider border-b border-white/5 pb-xs">
+<div class="col-span-6">Exercise</div>
+<div class="col-span-3 text-center">Sets/Reps</div>
+<div class="col-span-3 text-right">RPE</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Barbell Squat</div>
+<div class="col-span-3 text-center text-secondary">4 x 8</div>
+<div class="col-span-3 text-right">8.5</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Romanian DL</div>
+<div class="col-span-3 text-center text-secondary">3 x 12</div>
+<div class="col-span-3 text-right">8.0</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Leg Curls</div>
+<div class="col-span-3 text-center text-secondary">3 x 15</div>
+<div class="col-span-3 text-right">9.0</div>
+</div>
+</div>
+<button class="mt-auto w-full py-md bg-secondary text-black font-headline-md text-headline-md hover:bg-primary-fixed-dim transition-all active:scale-95 neon-glow-lime uppercase">Start Session</button>
+</div>
+<!-- Day 2 Card -->
+<div class="glass-card rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">Day 02</span>
+<h4 class="font-headline-md text-headline-md text-primary">Push Power</h4>
+</div>
+<span class="material-symbols-outlined text-secondary/40" data-icon="bolt">bolt</span>
+</div>
+<div class="space-y-sm">
+<div class="grid grid-cols-12 text-[10px] font-bold text-on-surface-variant uppercase tracking-wider border-b border-white/5 pb-xs">
+<div class="col-span-6">Exercise</div>
+<div class="col-span-3 text-center">Sets/Reps</div>
+<div class="col-span-3 text-right">RPE</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Bench Press</div>
+<div class="col-span-3 text-center text-secondary">5 x 5</div>
+<div class="col-span-3 text-right">9.0</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">OHP Press</div>
+<div class="col-span-3 text-center text-secondary">3 x 8</div>
+<div class="col-span-3 text-right">8.5</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Tricep Pushdowns</div>
+<div class="col-span-3 text-center text-secondary">4 x 12</div>
+<div class="col-span-3 text-right">9.5</div>
+</div>
+</div>
+<button class="mt-auto w-full py-md border border-secondary/30 text-secondary font-headline-md text-headline-md hover:bg-secondary/10 transition-all uppercase">View Details</button>
+</div>
+<!-- Day 3 Card (Rest) -->
+<div class="glass-card rounded-xl p-lg flex flex-col gap-md border-dashed border-on-surface-variant/20">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Day 03</span>
+<h4 class="font-headline-md text-headline-md text-on-surface-variant">Active Recovery</h4>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/20" data-icon="hotel">hotel</span>
+</div>
+<p class="text-body-md text-on-surface-variant/60 italic">"Muscles grow during rest. Focus on mobility and hydration today."</p>
+<div class="mt-4 flex gap-md">
+<div class="flex-1 p-md bg-white/5 rounded-lg text-center">
+<span class="block text-xs uppercase text-on-surface-variant mb-1">Target</span>
+<span class="font-stat-display text-sm text-secondary">10k Steps</span>
+</div>
+<div class="flex-1 p-md bg-white/5 rounded-lg text-center">
+<span class="block text-xs uppercase text-on-surface-variant mb-1">Mobility</span>
+<span class="font-stat-display text-sm text-secondary">20 Mins</span>
+</div>
+</div>
+</div>
+<!-- Day 4 Card -->
+<div class="glass-card rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">Day 04</span>
+<h4 class="font-headline-md text-headline-md text-primary">Pull / Lat Width</h4>
+</div>
+<span class="material-symbols-outlined text-secondary/40" data-icon="reorder">reorder</span>
+</div>
+<div class="space-y-sm">
+<div class="grid grid-cols-12 text-[10px] font-bold text-on-surface-variant uppercase tracking-wider border-b border-white/5 pb-xs">
+<div class="col-span-6">Exercise</div>
+<div class="col-span-3 text-center">Sets/Reps</div>
+<div class="col-span-3 text-right">RPE</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Weighted Pullups</div>
+<div class="col-span-3 text-center text-secondary">3 x MAX</div>
+<div class="col-span-3 text-right">9.5</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Bent Over Rows</div>
+<div class="col-span-3 text-center text-secondary">4 x 10</div>
+<div class="col-span-3 text-right">8.5</div>
+</div>
+</div>
+<button class="mt-auto w-full py-md border border-secondary/30 text-secondary font-headline-md text-headline-md hover:bg-secondary/10 transition-all uppercase">View Details</button>
+</div>
+<!-- Day 5 Card -->
+<div class="glass-card rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">Day 05</span>
+<h4 class="font-headline-md text-headline-md text-primary">Anterior Focus</h4>
+</div>
+<span class="material-symbols-outlined text-secondary/40" data-icon="accessibility_new">accessibility_new</span>
+</div>
+<div class="space-y-sm">
+<div class="grid grid-cols-12 text-[10px] font-bold text-on-surface-variant uppercase tracking-wider border-b border-white/5 pb-xs">
+<div class="col-span-6">Exercise</div>
+<div class="col-span-3 text-center">Sets/Reps</div>
+<div class="col-span-3 text-right">RPE</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Leg Press</div>
+<div class="col-span-3 text-center text-secondary">3 x 20</div>
+<div class="col-span-3 text-right">10.0</div>
+</div>
+</div>
+<button class="mt-auto w-full py-md border border-secondary/30 text-secondary font-headline-md text-headline-md hover:bg-secondary/10 transition-all uppercase">View Details</button>
+</div>
+<!-- Day 6 Card -->
+<div class="glass-card rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase">Day 06</span>
+<h4 class="font-headline-md text-headline-md text-primary">Accessories / Arms</h4>
+</div>
+<span class="material-symbols-outlined text-secondary/40" data-icon="arm_extensions">chrome_extension</span>
+</div>
+<div class="space-y-sm">
+<div class="grid grid-cols-12 text-[10px] font-bold text-on-surface-variant uppercase tracking-wider border-b border-white/5 pb-xs">
+<div class="col-span-6">Exercise</div>
+<div class="col-span-3 text-center">Sets/Reps</div>
+<div class="col-span-3 text-right">RPE</div>
+</div>
+<div class="grid grid-cols-12 items-center py-xs border-b border-white/5 font-stat-display text-xs">
+<div class="col-span-6 font-body-md text-sm">Dumbbell Curls</div>
+<div class="col-span-3 text-center text-secondary">4 x 15</div>
+<div class="col-span-3 text-right">9.0</div>
+</div>
+</div>
+<button class="mt-auto w-full py-md border border-secondary/30 text-secondary font-headline-md text-headline-md hover:bg-secondary/10 transition-all uppercase">View Details</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Icon Strip -->
+<div class="fixed bottom-20 w-full overflow-hidden bg-surface-container-lowest/80 backdrop-blur-md py-md border-t border-secondary/10">
+<div class="flex whitespace-nowrap gap-xl animate-scroll px-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="hardware">hardware</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Build Strength</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Gain Muscle</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Burn Fat</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="speed">speed</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Improve Performance</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="shield">shield</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Boost Confidence</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="trophy">trophy</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Achieve Victory</span>
+</div>
+<!-- Duplicate for infinite effect -->
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="hardware">hardware</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface">Build Strength</span>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full bg-surface-container/60 backdrop-blur-xl border-t border-secondary/10 h-20 px-lg flex justify-around items-center z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Upload</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Review</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary scale-110 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="event_note" data-weight="fill">event_note</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Plan</span>
+</div>
+</nav>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-variant flex flex-col md:flex-row justify-between items-center px-container-margin py-xl gap-md mb-20">
+<div class="font-headline-md text-headline-md text-secondary/30">GYM_AI</div>
+<div class="flex gap-xl text-on-surface-variant font-label-sm text-label-sm">
+<a class="hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="hover:text-secondary transition-colors" href="#">Terms</a>
+<a class="hover:text-secondary transition-colors" href="#">Support</a>
+<a class="hover:text-secondary transition-colors" href="#">API</a>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">© 2024 GYM_AI PRECISION LABS</div>
+</footer>
+<style>
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+    </style>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Sticky nav scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('py-sm');
+                header.classList.remove('py-md');
+            } else {
+                header.classList.add('py-md');
+                header.classList.remove('py-sm');
+            }
+        });
+    </script>
+<!-- ===== Exercise GIFs via ExerciseDB (RapidAPI) ===== -->
+<style>
+  .exg{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#141417;
+       border:1px solid rgba(198,244,50,.25);flex:0 0 auto;cursor:zoom-in;
+       transition:transform .25s ease,box-shadow .25s ease;}
+  .exg:hover{transform:scale(3.4) translateX(18px);transform-origin:left center;
+             z-index:70;position:relative;box-shadow:0 0 36px rgba(198,244,50,.35);}
+  #gif-key-banner{position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:200;
+       background:#1c1b1c;border:1px solid rgba(245,165,36,.5);color:#F5A524;
+       font:600 12px/1.4 Inter,sans-serif;padding:8px 14px;border-radius:8px;
+       letter-spacing:.04em;box-shadow:0 0 24px rgba(0,0,0,.5);}
+</style>
+<script>
+(function () {
+  // 1) PASTE YOUR FREE RAPIDAPI KEY BELOW (rapidapi.com -> ExerciseDB -> Subscribe -> copy key)
+  const RAPIDAPI_KEY = "PASTE_YOUR_RAPIDAPI_KEY_HERE";
+
+  // Map the labels shown on the card -> a search term ExerciseDB understands.
+  const SEARCH = {
+    "barbell squat":"barbell full squat","romanian dl":"romanian deadlift",
+    "leg curls":"lever leg curl","bench press":"barbell bench press",
+    "ohp press":"barbell standing military press","tricep pushdowns":"cable pushdown",
+    "weighted pullups":"pull-up","bent over rows":"barbell bent over row",
+    "leg press":"sled leg press","dumbbell curls":"dumbbell biceps curl"
+  };
+
+  const PLACEHOLDER =
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23141417'/%3E%3Cpath d='M14 22h16M11 18v8M33 18v8' stroke='%23C6F432' stroke-width='2' stroke-linecap='round' opacity='.6'/%3E%3C/svg%3E";
+
+  const cells = document.querySelectorAll('div.col-span-6.font-body-md.text-sm');
+  if (RAPIDAPI_KEY === "PASTE_YOUR_RAPIDAPI_KEY_HERE") {
+    const b = document.createElement('div');
+    b.id = 'gif-key-banner';
+    b.textContent = 'Paste your RapidAPI key in 5-workout.html (top of GIF script) to load live exercise GIFs.';
+    document.body.appendChild(b);
+  }
+
+  const cache = new Map();
+  async function gifFor(term) {
+    if (cache.has(term)) return cache.get(term);
+    const p = fetch('https://exercisedb.p.rapidapi.com/exercises/name/' +
+        encodeURIComponent(term) + '?limit=1&offset=0', {
+        headers: { 'X-RapidAPI-Key': RAPIDAPI_KEY,
+                   'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com' } })
+      .then(r => r.ok ? r.json() : [])
+      .then(a => (a && a[0] && a[0].gifUrl) ? a[0].gifUrl : null)
+      .catch(() => null);
+    cache.set(term, p);
+    return p;
+  }
+
+  cells.forEach(cell => {
+    const label = cell.textContent.trim();
+    const term = SEARCH[label.toLowerCase()] || label.toLowerCase();
+
+    // Wrap: thumbnail + name, side by side.
+    const img = document.createElement('img');
+    img.className = 'exg';
+    img.alt = label;
+    img.src = PLACEHOLDER;
+    img.onerror = () => { img.src = PLACEHOLDER; };
+    cell.classList.add('flex', 'items-center', 'gap-2');
+    cell.insertBefore(img, cell.firstChild);
+
+    if (RAPIDAPI_KEY !== "PASTE_YOUR_RAPIDAPI_KEY_HERE") {
+      gifFor(term).then(url => { if (url) img.src = url; });
+    }
+  });
+})();
+</script>
+<!-- ===== InBody-driven workout rendering ===== -->
+<script src="plan-engine.js"></script>
+<script src="ui-inbody.js"></script>
+<script>
+(function () {
+  function renderWorkout(plan) {
+    const p = plan || PlanEngine.current();
+    const t = p.training;
+
+    // Goal banner at the top of the matrix
+    let banner = document.getElementById('ib-goal-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'ib-goal-banner';
+      banner.className = 'glass-card rounded-xl p-lg mb-xl neon-glow-lime';
+      const header = document.querySelector('.mb-xl');
+      if (header && header.parentNode) header.parentNode.insertBefore(banner, header.nextSibling);
+    }
+    banner.innerHTML =
+      '<div class="flex items-center justify-between flex-wrap gap-md">' +
+        '<div>' +
+          '<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Derived from InBody</span>' +
+          '<h3 class="font-headline-md text-headline-md text-secondary uppercase">Goal: ' + p.goal + '</h3>' +
+          '<p class="text-body-md text-on-surface-variant max-w-xl mt-xs">' + p.reason + '</p>' +
+        '</div>' +
+        '<div class="grid grid-cols-2 gap-md text-right">' +
+          chip('Focus', t.focus) + chip('Split', t.split) +
+          chip('Rep range', t.repRange) + chip('Cardio', t.cardio) +
+        '</div>' +
+      '</div>';
+
+    function chip(label, val) {
+      return '<div><span class="block font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">' +
+        label + '</span><span class="font-stat-display text-sm text-secondary">' + val + '</span></div>';
+    }
+
+    // Subtitle under "Daily Performance Split"
+    document.querySelectorAll('p').forEach(el => {
+      if (/^Phase:/.test(el.textContent.trim()))
+        el.textContent = 'Phase: ' + t.focus + ' • Target ' + t.repRange + ' reps';
+    });
+
+    // Active-week objective reflects the reason
+    const active = document.querySelector('.neon-glow-lime .text-xs');
+    if (active) active.textContent = p.reason;
+
+    // Rep-range chip on each training day card
+    document.querySelectorAll('div.col-span-6.font-body-md.text-sm').forEach(cell => {
+      const card = cell.closest('.glass-card');
+      if (!card || card.dataset.repTagged) return;
+      card.dataset.repTagged = '1';
+      const h4 = card.querySelector('h4');
+      if (h4 && !h4.parentNode.querySelector('.rep-chip')) {
+        const chipEl = document.createElement('span');
+        chipEl.className = 'rep-chip block font-label-sm text-label-sm text-secondary/70 uppercase tracking-widest mt-1';
+        chipEl.textContent = t.repRange + ' reps';
+        h4.insertAdjacentElement('afterend', chipEl);
+      }
+    });
+  }
+
+  renderWorkout();
+  InBodyPanel.mount(renderWorkout);
+})();
+</script>
+</body></html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI GYM TRAINER | Peak Performance Engineered</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#b2f746",
+                      "on-primary-fixed": "#161f00",
+                      "on-tertiary-container": "#636565",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0e0e0f",
+                      "surface": "#131314",
+                      "primary-fixed": "#c5f331",
+                      "on-surface-variant": "#c4c9ae",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary": "#213600",
+                      "surface-tint": "#aad600",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "on-secondary-fixed-variant": "#334f00",
+                      "on-primary-container": "#556d00",
+                      "inverse-surface": "#e5e2e3",
+                      "surface-container": "#201f20",
+                      "surface-dim": "#131314",
+                      "primary-fixed-dim": "#aad600",
+                      "background": "#131314",
+                      "surface-variant": "#353436",
+                      "outline": "#8e937a",
+                      "on-tertiary": "#2f3131",
+                      "outline-variant": "#444934",
+                      "inverse-on-surface": "#313031",
+                      "on-primary-fixed-variant": "#3b4d00",
+                      "on-primary": "#283500",
+                      "surface-container-low": "#1c1b1c",
+                      "error-container": "#93000a",
+                      "secondary": "#9ddf2e",
+                      "error": "#ffb4ab",
+                      "surface-container-high": "#2a2a2b",
+                      "surface-container-highest": "#353436",
+                      "tertiary": "#ffffff",
+                      "primary-container": "#c5f331",
+                      "surface-bright": "#3a393a",
+                      "primary": "#ffffff",
+                      "on-background": "#e5e2e3",
+                      "secondary-fixed-dim": "#98da27",
+                      "on-secondary-container": "#304b00",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "secondary-container": "#83c300",
+                      "inverse-primary": "#506600",
+                      "on-secondary-fixed": "#121f00",
+                      "on-surface": "#e5e2e3",
+                      "tertiary-container": "#e2e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "3xl": "64px",
+                      "2xl": "48px",
+                      "xl": "32px",
+                      "container-margin": "24px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "unit": "8px",
+                      "lg": "24px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "headline-xl-mobile": ["Anton"],
+                      "body-lg": ["Inter"],
+                      "stat-display": ["JetBrains Mono"],
+                      "headline-md": ["Anton"],
+                      "body-md": ["Inter"],
+                      "display-lg": ["Anton"],
+                      "label-sm": ["Inter"],
+                      "headline-xl": ["Anton"]
+              },
+              "fontSize": {
+                      "headline-xl-mobile": ["36px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "stat-display": ["32px", {"lineHeight": "32px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "28px", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["80px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-xl": ["48px", {"lineHeight": "48px", "letterSpacing": "0.01em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .film-grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+            background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+        }
+        .radial-lime-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(178, 247, 70, 0.12) 0%, rgba(19, 19, 20, 0) 70%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(178, 247, 70, 0.15);
+        }
+        .text-glow {
+            text-shadow: 0 0 15px rgba(178, 247, 70, 0.3);
+        }
+        .animated-line {
+            background: linear-gradient(90deg, transparent, #b2f746, transparent);
+            background-size: 200% 100%;
+            animation: lineMove 3s infinite linear;
+        }
+        @keyframes lineMove {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        body {
+            background-color: #0A0A0B;
+            color: #e5e2e3;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+<div class="film-grain"></div>
+<!-- Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-secondary-container/15 shadow-2xl">
+<div class="flex justify-between items-center px-container-margin py-md max-w-7xl mx-auto w-full">
+<div class="font-headline-md text-headline-md text-secondary-fixed tracking-tighter uppercase">
+                AI GYM TRAINER
+            </div>
+<div class="hidden md:flex gap-xl items-center">
+<a class="text-secondary-fixed font-bold border-b-2 border-secondary-fixed pb-1 font-label-sm text-label-sm" href="#">Training</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary-fixed transition-colors duration-300 font-label-sm text-label-sm" href="#">Technology</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary-fixed transition-colors duration-300 font-label-sm text-label-sm" href="#">Reviews</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary-fixed transition-colors duration-300 font-label-sm text-label-sm" href="#">Pricing</a>
+</div>
+<button class="bg-secondary-fixed text-on-primary-fixed font-headline-md text-label-sm px-lg py-sm uppercase tracking-wider active:scale-95 transition-transform">
+                Get Started
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative min-h-screen flex items-center pt-3xl overflow-hidden">
+<div class="absolute inset-0 radial-lime-glow z-0"></div>
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-secondary-fixed/5 rounded-full blur-3xl"></div>
+<div class="max-w-7xl mx-auto px-container-margin w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-2xl items-center">
+<div class="space-y-xl">
+<div class="inline-flex items-center gap-sm bg-surface-variant/30 border border-secondary-fixed/20 px-md py-xs rounded-full">
+<span class="w-2 h-2 bg-secondary-fixed rounded-full animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-widest">System Online: v4.2 Precision Engine</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl md:font-display-lg md:text-display-lg uppercase leading-[0.9] tracking-tighter">
+                    UPLOAD YOUR <span class="text-secondary-fixed text-glow">INBODY.</span><br/>GET YOUR PLAN.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    Experience surgical precision in fitness. Our AI analyzes your body composition data to build a localized, periodized roadmap designed for elite results.
+                </p>
+<div class="flex flex-col sm:flex-row gap-md pt-md">
+<button class="bg-secondary-fixed text-on-primary-fixed font-headline-md text-headline-md px-2xl py-md uppercase shadow-[0_0_20px_rgba(178,247,70,0.3)] hover:scale-105 transition-all">
+                        MEET YOUR AI TRAINER
+                    </button>
+<button class="border border-outline/30 font-headline-md text-headline-md px-2xl py-md uppercase hover:bg-surface-variant transition-all">
+                        View Science
+                    </button>
+</div>
+</div>
+<div class="relative hidden lg:block h-[600px] rounded-xl overflow-hidden glass-card">
+<img alt="Athletic AI Training Hub" class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" data-alt="A cinematic, high-contrast photograph of a futuristic high-end gym facility with glowing lime green neon accents. A professional athlete stands in front of a digital glass interface displaying body metrics and workout data. The lighting is moody and dark with deep blacks and vibrant electric lime highlights. The atmosphere is premium, technological, and intense." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6SaTpoa7cOyu1r1lEvQ5HWJFNRHXp-TU1QORoeIerKE1US3o_IXlEPpaz6MDir27L9ab0D10JQdKVJ45EX6sw-84aeQ9mRqQs7Arfe3ydj_9l3gaYllXaxmvFC5mYPGAbNHpL_5_BfTVof2aJ93Gto0itomaBVFUJznrxEJbi7qBYp1wyFoHtcKfo9r1TN-vmdKPhwjRyjGr_e52c_IB9x3babR_puXkUQXAOP3PtwIPaiGm9uSCEK1gNQx7Z5ejwyhPix8CEeyg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-lg left-lg right-lg glass-card p-lg space-y-sm">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-widest">Real-time Analysis</span>
+<span class="font-stat-display text-on-surface text-sm">98.4% ACCURACY</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed w-4/5"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Features Bento Grid -->
+<section class="py-3xl bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-container-margin">
+<div class="mb-2xl text-center">
+<h2 class="font-headline-xl text-headline-xl uppercase tracking-tight mb-sm">Precision Features</h2>
+<div class="w-16 h-1 bg-secondary-fixed mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+<!-- Card 1 -->
+<div class="glass-card p-xl flex flex-col items-start gap-md group hover:border-secondary-fixed transition-colors">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary-fixed/10 rounded-lg text-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">query_stats</span>
+</div>
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight">Read your InBody</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Instant parsing of lean mass, body fat, and metabolic rates from any standard InBody report.</p>
+</div>
+<!-- Card 2 -->
+<div class="glass-card p-xl flex flex-col items-start gap-md group hover:border-secondary-fixed transition-colors">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary-fixed/10 rounded-lg text-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">restaurant</span>
+</div>
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight">Bangladeshi Diet</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Localized nutrition plans featuring regional staples, optimized for muscle growth and recovery.</p>
+</div>
+<!-- Card 3 -->
+<div class="glass-card p-xl flex flex-col items-start gap-md group hover:border-secondary-fixed transition-colors">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary-fixed/10 rounded-lg text-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">fitness_center</span>
+</div>
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight">8-Week Program</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Periodized resistance training cycles that adapt to your specific strength-to-weight ratio.</p>
+</div>
+<!-- Card 4 -->
+<div class="glass-card p-xl flex flex-col items-start gap-md group hover:border-secondary-fixed transition-colors">
+<div class="w-12 h-12 flex items-center justify-center bg-secondary-fixed/10 rounded-lg text-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">trending_up</span>
+</div>
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight">Track Progress</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time metrics visualization with predictive modeling for future performance peaks.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-3xl relative overflow-hidden">
+<div class="max-w-7xl mx-auto px-container-margin relative z-10">
+<div class="mb-3xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-widest">Protocol</span>
+<h2 class="font-headline-xl text-headline-xl uppercase tracking-tight">HOW IT WORKS</h2>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">The science of transformation, simplified into three distinct operational phases.</p>
+</div>
+<div class="relative py-xl">
+<!-- Connecting Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-surface-variant z-0 transform -translate-y-1/2 hidden md:block">
+<div class="animated-line h-full w-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-2xl relative z-10">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center gap-lg">
+<div class="w-16 h-16 bg-background border-2 border-secondary-fixed rounded-full flex items-center justify-center font-stat-display text-secondary-fixed text-xl shadow-[0_0_15px_rgba(178,247,70,0.4)]">1</div>
+<div class="space-y-sm">
+<h4 class="font-headline-md text-headline-md uppercase">Upload</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Submit your InBody PDF or photo. Our AI parses the data in milliseconds.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center gap-lg">
+<div class="w-16 h-16 bg-background border-2 border-secondary-fixed rounded-full flex items-center justify-center font-stat-display text-secondary-fixed text-xl shadow-[0_0_15px_rgba(178,247,70,0.4)]">2</div>
+<div class="space-y-sm">
+<h4 class="font-headline-md text-headline-md uppercase">Review</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Customize your food preferences and gym equipment availability.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center gap-lg">
+<div class="w-16 h-16 bg-background border-2 border-secondary-fixed rounded-full flex items-center justify-center font-stat-display text-secondary-fixed text-xl shadow-[0_0_15px_rgba(178,247,70,0.4)]">3</div>
+<div class="space-y-sm">
+<h4 class="font-headline-md text-headline-md uppercase">Train</h4>
+<p class="font-body-md text-body-md text-on-surface-variant px-md">Execute your personalized program and witness the data-driven change.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stat Strip -->
+<section class="bg-secondary-fixed py-2xl border-y border-on-primary-fixed/10">
+<div class="max-w-7xl mx-auto px-container-margin grid grid-cols-2 md:grid-cols-4 gap-xl">
+<div class="text-on-primary-fixed text-center">
+<div class="font-stat-display text-stat-display">15K+</div>
+<div class="font-label-sm text-label-sm uppercase font-bold opacity-70">Active Athletes</div>
+</div>
+<div class="text-on-primary-fixed text-center">
+<div class="font-stat-display text-stat-display">250K+</div>
+<div class="font-label-sm text-label-sm uppercase font-bold opacity-70">Workouts Generated</div>
+</div>
+<div class="text-on-primary-fixed text-center">
+<div class="font-stat-display text-stat-display">94%</div>
+<div class="font-label-sm text-label-sm uppercase font-bold opacity-70">Success Rate</div>
+</div>
+<div class="text-on-primary-fixed text-center">
+<div class="font-stat-display text-stat-display">1.2M</div>
+<div class="font-label-sm text-label-sm uppercase font-bold opacity-70">Calories Tracked</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-surface-variant">
+<div class="flex flex-col md:flex-row justify-between items-center px-container-margin max-w-7xl mx-auto gap-md">
+<div class="font-headline-md text-headline-md text-secondary-fixed uppercase">AI GYM TRAINER</div>
+<p class="font-body-md text-body-md text-on-tertiary-container text-center md:text-left">
+                © 2024 AI GYM TRAINER. ENGINEERED FOR PEAK PERFORMANCE.
+            </p>
+<div class="flex gap-lg">
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-all font-label-sm text-label-sm" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-all font-label-sm text-label-sm" href="#">Terms of Service</a>
+<a class="text-on-tertiary-container hover:text-secondary-fixed transition-all font-label-sm text-label-sm" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Mouse parallax for hero elements
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) / 50;
+            const moveY = (e.clientY - window.innerHeight / 2) / 50;
+            const glow = document.querySelector('.radial-lime-glow');
+            if (glow) {
+                glow.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700', 'ease-out');
+            observer.observe(el);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Diet Plan | AI Gym Trainer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Anton:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>:root {
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(198, 244, 50, 0.15);
+    --neon-glow: rgba(198, 244, 50, 0.1)
+    }
+body {
+    background-color: #131314;
+    color: #e5e2e3;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden
+    }
+.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.02;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCAes4KL0cA0JduVy4PQkwjHi7PV1uCK6ryrNa455lJ8s5GVHura9Q-zdHmCZJPZ-I6cRu4PCAnd9PlypOFazkVq_u9quxT3P8JwqZM2aUsZFBewtGgiKqfcvj6B4jGPeXwP8yCcuqHSwCBDtwP-hztPC3HauPSkJLv2qKjzdeQgwcQXrXz9NpLQlb_XD4ZNtYrR5msbk415aN1M1jlkow16N06GuI3j5BCnoBTx_gHOfs96kGxWpv7eliuap7Cf2ITUHeLcYSCOZQ)
+    }
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s ease, border-color 0.3s ease
+    }
+.glass-card:hover {
+    transform: translatey(-4px);
+    border-color: rgba(198, 244, 50, 0.4)
+    }
+.neon-hum {
+    box-shadow: 0 0 32px var(--neon-glow)
+    }
+.radial-bleed {
+    background: radial-gradient(circle at center, rgba(198, 244, 50, 0.08) 0%, transparent 70%)
+    }
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px
+    }
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent
+    }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(198, 244, 50, 0.3);
+    border-radius: 10px
+    }</style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-low": "#1c1b1c",
+                        "primary-fixed-dim": "#aad600",
+                        "on-secondary": "#213600",
+                        "primary-fixed": "#c5f331",
+                        "surface-container-high": "#2a2a2b",
+                        "primary": "#ffffff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary": "#ffffff",
+                        "primary-container": "#c5f331",
+                        "on-surface": "#e5e2e3",
+                        "outline-variant": "#444934",
+                        "inverse-surface": "#e5e2e3",
+                        "surface-container": "#201f20",
+                        "surface-dim": "#131314",
+                        "outline": "#8e937a",
+                        "on-primary-container": "#556d00",
+                        "background": "#131314",
+                        "secondary": "#9ddf2e",
+                        "on-surface-variant": "#c4c9ae",
+                        "surface-container-lowest": "#0e0e0f",
+                        "surface": "#131314",
+                        "error": "#ffb4ab"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "3xl": "64px",
+                        "md": "16px",
+                        "container-margin": "24px",
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "unit": "8px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Anton"],
+                        "stat-display": ["JetBrains Mono"],
+                        "headline-xl": ["Anton"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Anton"],
+                        "body-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-md": ["24px", {"lineHeight": "28px", "letterSpacing": "0.02em"}],
+                        "stat-display": ["32px", {"lineHeight": "32px", "letterSpacing": "-0.04em"}],
+                        "headline-xl": ["48px", {"lineHeight": "48px", "letterSpacing": "0.01em"}],
+                        "display-lg": ["80px", {"lineHeight": "80px", "letterSpacing": "-0.02em"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface antialiased">
+<div class="grain-overlay"></div>
+<!-- Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/15 flex justify-between items-center px-container-margin h-20 max-w-full">
+<div class="font-headline-md text-headline-md text-secondary tracking-tighter">AI GYM TRAINER</div>
+<div class="hidden md:flex items-center gap-xl">
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200" href="#">Workouts</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1" href="#">Nutrition</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200" href="#">Community</a>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">account_circle</span>
+<button class="bg-secondary-container text-on-secondary-container px-lg py-sm rounded-full font-bold active:scale-95 transition-transform">Start Session</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-32 pb-24 px-container-margin max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Top Section: Calorie Target -->
+<section class="lg:col-span-12 flex flex-col items-center text-center mb-xl relative">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 radial-bleed -z-10"></div>
+<!-- Progress Stepper (Contextual Sticky Nav) -->
+<div class="flex items-center gap-md mb-2xl bg-surface-container-low px-lg py-sm rounded-full border border-outline-variant/10">
+<div class="flex items-center gap-sm text-on-surface-variant opacity-50">
+<span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs">1</span>
+<span class="font-label-sm uppercase tracking-widest">Upload</span>
+</div>
+<div class="w-8 h-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-sm text-on-surface-variant opacity-50">
+<span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs">2</span>
+<span class="font-label-sm uppercase tracking-widest">Review</span>
+</div>
+<div class="w-8 h-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-sm text-secondary">
+<span class="w-6 h-6 rounded-full border border-secondary bg-secondary text-on-secondary flex items-center justify-center text-xs">3</span>
+<span class="font-label-sm uppercase tracking-widest font-bold">Plan</span>
+</div>
+</div>
+<h1 class="font-display-lg text-display-lg text-secondary uppercase tracking-tighter leading-none mb-sm">
+                1905 KCAL/DAY
+            </h1>
+<div class="font-stat-display text-on-surface-variant tracking-normal font-medium bg-white/5 py-xs px-lg rounded-lg border border-white/10">
+                BMR 1570 <span class="text-secondary mx-xs">×</span> 1.5 <span class="text-secondary mx-xs">→</span> 2355 TDEE <span class="text-secondary mx-xs">→</span> −450 <span class="text-secondary mx-xs">→</span> 1905 kcal/day
+            </div>
+</section>
+<!-- Macros Section -->
+<section class="lg:col-span-12 grid grid-cols-1 md:grid-cols-12 gap-lg items-center">
+<!-- Animated Donut Chart -->
+<div class="md:col-span-4 flex justify-center relative py-xl">
+<svg class="w-64 h-64 -rotate-90">
+<!-- Background Tracks -->
+<circle cx="128" cy="128" fill="transparent" r="100" stroke="rgba(255,255,255,0.05)" stroke-width="20"></circle>
+<!-- Progress Segments -->
+<!-- Protein (40%) -->
+<circle class="transition-all duration-1000 ease-out" cx="128" cy="128" fill="transparent" r="100" stroke="var(--secondary)" stroke-dasharray="628.3" stroke-dashoffset="377" stroke-width="20"></circle>
+<!-- Carbs (35%) - offset starts after protein -->
+<circle class="opacity-60 transition-all duration-1000 ease-out" cx="128" cy="128" fill="transparent" r="100" stroke="#FFFFFF" stroke-dasharray="628.3" stroke-dashoffset="408" stroke-width="20" style="transform: rotate(144deg); transform-origin: center;"></circle>
+<!-- Fat (25%) - offset starts after carbs -->
+<circle class="transition-all duration-1000 ease-out" cx="128" cy="128" fill="transparent" r="100" stroke="#8E937A" stroke-dasharray="628.3" stroke-dashoffset="471" stroke-width="20" style="transform: rotate(270deg); transform-origin: center;"></circle>
+</svg>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+<span class="block font-headline-md text-headline-md text-on-surface">MACROS</span>
+<span class="block font-label-sm text-on-surface-variant uppercase tracking-widest">Balanced</span>
+</div>
+</div>
+<!-- Macro Cards -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-md">
+<div class="glass-card p-lg rounded-2xl border-l-4 border-l-secondary">
+<span class="block font-label-sm text-secondary uppercase tracking-widest mb-sm">Protein</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-stat-display text-headline-xl text-on-surface">190</span>
+<span class="font-body-md text-on-surface-variant">g</span>
+</div>
+<div class="mt-md bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[40%]"></div>
+</div>
+<span class="block mt-sm font-label-sm text-on-surface-variant">40% Total Intake</span>
+</div>
+<div class="glass-card p-lg rounded-2xl border-l-4 border-l-on-surface/40">
+<span class="block font-label-sm text-on-surface-variant uppercase tracking-widest mb-sm">Carbs</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-stat-display text-headline-xl text-on-surface">166</span>
+<span class="font-body-md text-on-surface-variant">g</span>
+</div>
+<div class="mt-md bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-on-surface/40 h-full w-[35%]"></div>
+</div>
+<span class="block mt-sm font-label-sm text-on-surface-variant">35% Total Intake</span>
+</div>
+<div class="glass-card p-lg rounded-2xl border-l-4 border-l-outline">
+<span class="block font-label-sm text-on-surface-variant uppercase tracking-widest mb-sm">Fat</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-stat-display text-headline-xl text-on-surface">53</span>
+<span class="font-body-md text-on-surface-variant">g</span>
+</div>
+<div class="mt-md bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-outline h-full w-[25%]"></div>
+</div>
+<span class="block mt-sm font-label-sm text-on-surface-variant">25% Total Intake</span>
+</div>
+</div>
+</section>
+<!-- Meals Section (Left Canvas) -->
+<section class="lg:col-span-8 space-y-md">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">restaurant_menu</span>
+                DAILY MEAL ARCHITECTURE
+            </h3>
+<!-- NASHTA -->
+<div class="glass-card rounded-2xl overflow-hidden group">
+<div class="p-lg flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md text-secondary opacity-50">01</span>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface leading-none uppercase">NASHTA</h4>
+<p class="text-on-surface-variant text-sm mt-1">Breakfast • 08:30 AM</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-stat-display text-2xl text-on-surface">450 <span class="text-sm font-body-md text-on-surface-variant">kcal</span></span>
+<span class="material-symbols-outlined text-secondary transition-transform group-hover:translate-y-1">expand_more</span>
+</div>
+</div>
+<div class="px-lg pb-lg border-t border-white/5 pt-md">
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Egg Whites (Hard Boiled)</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">4 Large Whites • 15g Protein</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">68 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Oats with Skimmed Milk</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">50g Dry Oats • 200ml Milk</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">290 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Banana</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">1 Medium • 105g</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">92 kcal</span>
+</div>
+</div>
+<button class="w-full py-md border border-secondary/30 rounded-xl font-label-sm text-secondary uppercase tracking-widest hover:bg-secondary/10 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-md">swap_horiz</span> Swap Meal Option
+                    </button>
+</div>
+</div>
+<!-- DUPUR -->
+<div class="glass-card rounded-2xl overflow-hidden group">
+<div class="p-lg flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md text-secondary opacity-50">02</span>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface leading-none uppercase">DUPUR</h4>
+<p class="text-on-surface-variant text-sm mt-1">Lunch • 02:00 PM</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-stat-display text-2xl text-on-surface">620 <span class="text-sm font-body-md text-on-surface-variant">kcal</span></span>
+<span class="material-symbols-outlined text-secondary">expand_more</span>
+</div>
+</div>
+<div class="hidden px-lg pb-lg border-t border-white/5 pt-md">
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Brown Rice</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">1.5 Cup Cooked • 225g</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">248 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Grilled Rui Fish</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">150g • Lean Prep</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">210 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Masoor Dal (Thick)</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">1 Bowl • High Protein</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">162 kcal</span>
+</div>
+</div>
+<button class="w-full py-md border border-secondary/30 rounded-xl font-label-sm text-secondary uppercase tracking-widest hover:bg-secondary/10 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-md">swap_horiz</span> Swap Meal Option
+                    </button>
+</div>
+</div>
+<!-- BIKEL -->
+<div class="glass-card rounded-2xl overflow-hidden group">
+<div class="p-lg flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md text-secondary opacity-50">03</span>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface leading-none uppercase">BIKEL</h4>
+<p class="text-on-surface-variant text-sm mt-1">Snack • 05:30 PM</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-stat-display text-2xl text-on-surface">215 <span class="text-sm font-body-md text-on-surface-variant">kcal</span></span>
+<span class="material-symbols-outlined text-secondary">expand_more</span>
+</div>
+</div>
+<div class="hidden px-lg pb-lg border-t border-white/5 pt-md">
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Greek Yogurt (Plain)</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">150g • Probiotic</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">145 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Almonds</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">10 Pieces • Healthy Fats</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">70 kcal</span>
+</div>
+</div>
+<button class="w-full py-md border border-secondary/30 rounded-xl font-label-sm text-secondary uppercase tracking-widest hover:bg-secondary/10 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-md">swap_horiz</span> Swap Meal Option
+                    </button>
+</div>
+</div>
+<!-- RAAT -->
+<div class="glass-card rounded-2xl overflow-hidden group">
+<div class="p-lg flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md text-secondary opacity-50">04</span>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface leading-none uppercase">RAAT</h4>
+<p class="text-on-surface-variant text-sm mt-1">Dinner • 09:30 PM</p>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-stat-display text-2xl text-on-surface">620 <span class="text-sm font-body-md text-on-surface-variant">kcal</span></span>
+<span class="material-symbols-outlined text-secondary">expand_more</span>
+</div>
+</div>
+<div class="hidden px-lg pb-lg border-t border-white/5 pt-md">
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Chicken Breast (Grilled)</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">200g • Lean Protein</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">330 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Mixed Vegetable Sabji</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">Large Bowl • Low Oil</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">140 kcal</span>
+</div>
+<div class="flex justify-between items-center py-sm border-b border-white/5">
+<div>
+<span class="block font-body-lg text-on-surface">Whole Wheat Roti</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-widest">2 Pieces • Complex Carbs</span>
+</div>
+<span class="font-stat-display text-on-surface text-lg">150 kcal</span>
+</div>
+</div>
+<button class="w-full py-md border border-secondary/30 rounded-xl font-label-sm text-secondary uppercase tracking-widest hover:bg-secondary/10 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-md">swap_horiz</span> Swap Meal Option
+                    </button>
+</div>
+</div>
+</section>
+<!-- Sidebar Section -->
+<aside class="lg:col-span-4 space-y-xl">
+<!-- Water Intake -->
+<div class="glass-card p-lg rounded-2xl relative overflow-hidden">
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface">HYDRATION</h4>
+<p class="text-on-surface-variant text-sm">Daily Goal: 3.5 Liters</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-3xl">water_drop</span>
+</div>
+<div class="relative h-48 bg-white/5 rounded-xl overflow-hidden border border-white/10">
+<div class="absolute bottom-0 left-0 w-full bg-secondary/20 h-[65%] transition-all duration-1000">
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary shadow-[0_0_10px_rgba(198,244,50,0.8)]"></div>
+</div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-stat-display text-4xl text-on-surface">2.25<span class="text-lg">L</span></span>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-widest">Consumed</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mt-md">
+<button class="py-sm bg-white/5 rounded-lg font-label-sm hover:bg-white/10 transition-colors">+ 250ml</button>
+<button class="py-sm bg-white/5 rounded-lg font-label-sm hover:bg-white/10 transition-colors">+ 500ml</button>
+</div>
+</div>
+<!-- Pro Tips -->
+<div class="glass-card p-lg rounded-2xl">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-lg">COACH TIPS</h4>
+<div class="space-y-md">
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="text-body-md text-on-surface-variant">Prioritize protein in every meal to maintain muscle mass during deficit.</p>
+</div>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="text-body-md text-on-surface-variant">Drink 500ml of water 15 minutes before lunch and dinner for satiety.</p>
+</div>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="text-body-md text-on-surface-variant">Don't skip the fiber. Your vegetables are non-negotiable for digestion.</p>
+</div>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="text-body-md text-on-surface-variant">If training in the evening, move 20% of your carbs to your pre-workout snack.</p>
+</div>
+</div>
+</div>
+<!-- Meal Image -->
+<div class="rounded-2xl overflow-hidden h-64 border border-outline-variant/20 relative group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A top-down professional food photography shot of a healthy fitness meal. Grilled salmon fillet with lemon, steamed asparagus, and a side of quinoa. The lighting is moody and cinematic with high contrast, featuring deep shadows and bright highlights on the fresh ingredients. The color palette emphasizes vibrant greens and warm orange tones against a dark slate background, perfectly matching a premium fitness aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWJdWbEpnX4WfKUV_9bBzKr-xzF6f8IOXrItgjoAjmBvSH-jbpi6lFA5_ajuMFqxDsE5qisOxhNdiV9uZd2Re0omszO3SP2IEuAqoDCNOmUfzClYhiF1c1E7l5iTuSSNbGwOnEFvlNT3nDW6KCiNI9hEk66p6S0R8nN-cvtcD10_rv9vQXIlg1QG4feYy1y-1k-mc4nz_RhW4ElFebVVbYIW64HyPcEqbTT_OjDgdfuvBFS-dnfPPM3L9CIY_uF-V78OeuccrePck"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-lg left-lg">
+<span class="bg-secondary text-on-secondary font-label-sm px-md py-xs rounded-full uppercase">Chef Recommended</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center px-container-margin py-lg gap-md">
+<div class="font-headline-md text-headline-md text-secondary">AI GYM TRAINER</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Support</a>
+</div>
+<p class="text-on-surface-variant font-body-md">© 2024 AI Gym Trainer. All rights reserved.</p>
+</footer>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Subtle parallax for glass cards
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+        });
+    </script>
+<!-- ===== InBody-driven diet rendering ===== -->
+<script src="plan-engine.js"></script>
+<script src="ui-inbody.js"></script>
+<script>
+(function () {
+  const C = 628.3; // donut circumference (2π·100)
+
+  function renderDiet(plan) {
+    const p = plan || PlanEngine.current();
+    const m = p.macros;
+
+    // Calorie headline + transparent math
+    const h1 = document.querySelector('h1.font-display-lg');
+    if (h1) h1.textContent = p.kcal.toLocaleString() + ' KCAL/DAY';
+    const delta = p.kcal - p.tdee;
+    const sign = delta >= 0 ? '+' : '−';
+    if (h1 && h1.nextElementSibling) {
+      h1.nextElementSibling.innerHTML =
+        'BMR ' + p.bmr + ' <span class="text-secondary mx-xs">×</span> ' + p.input.activity +
+        ' <span class="text-secondary mx-xs">→</span> ' + p.tdee +
+        ' TDEE <span class="text-secondary mx-xs">→</span> ' + sign + Math.abs(delta) +
+        ' <span class="text-secondary mx-xs">→</span> ' + p.kcal + ' kcal/day';
+    }
+
+    // Goal label under the donut
+    const goalLabel = document.querySelector('.absolute .font-label-sm.uppercase.tracking-widest');
+    if (goalLabel) goalLabel.textContent = p.goal;
+
+    // Macro cards: [protein, carbs, fat] in document order
+    const cards = document.querySelectorAll('section .glass-card.border-l-4');
+    const vals = [
+      [m.protein, m.proteinPct],
+      [m.carbs,   m.carbsPct],
+      [m.fat,     m.fatPct]
+    ];
+    cards.forEach((card, i) => {
+      if (!vals[i]) return;
+      const num = card.querySelector('.font-stat-display');
+      if (num) num.textContent = vals[i][0];
+      const bar = card.querySelector('.h-full');
+      if (bar) bar.style.width = vals[i][1] + '%';
+      const pctTxt = card.querySelector('.mt-sm.font-label-sm');
+      if (pctTxt) pctTxt.textContent = vals[i][1] + '% Total Intake';
+    });
+
+    // Donut segments
+    const circles = document.querySelectorAll('svg circle');
+    // circles[0] = track, [1]=protein, [2]=carbs, [3]=fat
+    if (circles.length >= 4) {
+      const setSeg = (c, pct, rotateDeg) => {
+        c.setAttribute('stroke-dashoffset', (C * (1 - pct / 100)).toFixed(1));
+        if (rotateDeg != null) c.style.transform = 'rotate(' + rotateDeg + 'deg)';
+      };
+      setSeg(circles[1], m.proteinPct, null);
+      setSeg(circles[2], m.carbsPct, m.proteinPct * 3.6);
+      setSeg(circles[3], m.fatPct, (m.proteinPct + m.carbsPct) * 3.6);
+    }
+  }
+
+  renderDiet();
+  InBodyPanel.mount(renderDiet);
+})();
+</script>
+</body></html>
