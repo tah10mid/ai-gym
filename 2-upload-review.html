@@ -355,4 +355,95 @@
             generateBtn.style.cursor = 'pointer';
         }, 3000);
     </script>
+<!-- ===== Real InBody OCR via /api/analyze (Claude vision) ===== -->
+<style>
+  #ai-ocr{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:300;width:min(560px,92vw);
+    background:#141417;border:1px solid rgba(198,244,50,.25);border-radius:16px;padding:16px;
+    box-shadow:0 24px 60px rgba(0,0,0,.6);font-family:Inter,system-ui,sans-serif;color:#F5F5F5}
+  #ai-ocr h4{margin:0 0 8px;font:700 11px/1 Inter;letter-spacing:.18em;color:#8A8F98;text-transform:uppercase}
+  #ai-ocr .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  #ai-ocr input[type=file]{flex:1;min-width:160px;color:#8A8F98;font:500 12px Inter}
+  #ai-ocr button{background:#C6F432;color:#0A0A0B;border:0;border-radius:10px;padding:10px 14px;
+    font:700 12px/1 Inter;letter-spacing:.06em;cursor:pointer}
+  #ai-ocr button:disabled{opacity:.5;cursor:default}
+  #ai-ocr .status{margin-top:10px;font:500 12px/1.5 Inter;color:#A3E635;min-height:16px}
+  #ai-ocr .status.err{color:#FF5C5C}
+  #ai-ocr a{color:#C6F432}
+</style>
+<script src="plan-engine.js"></script>
+<script>
+(function () {
+  const wrap = document.createElement('div');
+  wrap.id = 'ai-ocr';
+  wrap.innerHTML =
+    '<h4>Analyze InBody report (AI)</h4>' +
+    '<div class="row">' +
+      '<input type="file" id="ocr-file" accept="image/*">' +
+      '<button id="ocr-go" disabled>Analyze</button>' +
+    '</div>' +
+    '<div class="status" id="ocr-status">Pick a photo/scan of your InBody report.</div>';
+  document.body.appendChild(wrap);
+
+  const fileInput = wrap.querySelector('#ocr-file');
+  const goBtn = wrap.querySelector('#ocr-go');
+  const status = wrap.querySelector('#ocr-status');
+  let picked = null;
+
+  fileInput.addEventListener('change', () => {
+    picked = fileInput.files[0] || null;
+    goBtn.disabled = !picked;
+    status.className = 'status';
+    status.textContent = picked ? `Ready: ${picked.name}` : 'Pick a photo/scan of your InBody report.';
+  });
+
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result).split(',')[1]); // strip data: prefix
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+
+  goBtn.addEventListener('click', async () => {
+    if (!picked) return;
+    goBtn.disabled = true;
+    status.className = 'status';
+    status.textContent = 'Reading your report with Claude…';
+    try {
+      const imageBase64 = await toBase64(picked);
+      const resp = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64, mediaType: picked.type || 'image/jpeg' })
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || ('HTTP ' + resp.status));
+
+      const m = data.metrics || {};
+      // Persist whatever the model found; PlanEngine fills gaps with sample defaults.
+      const input = {};
+      ['sex', 'age', 'heightCm', 'weightKg', 'pbf', 'smm'].forEach(k => {
+        if (m[k] !== null && m[k] !== undefined) input[k] = m[k];
+      });
+      if (window.PlanEngine) PlanEngine.save(input);
+      const plan = window.PlanEngine ? PlanEngine.compute(input) : null;
+
+      const found = Object.keys(input).length;
+      status.innerHTML =
+        `Read ${found} value(s): ` +
+        ['weightKg','smm','pbf'].map(k => m[k] != null ? `${k} ${m[k]}` : null).filter(Boolean).join(' · ') +
+        (plan ? ` → Goal <b>${plan.goal}</b>, ${plan.kcal} kcal. ` : ' ') +
+        'Open <a href="4-diet.html">Diet</a> / <a href="5-workout.html">Workout</a>.' +
+        (m.notes ? `<br><span style="color:#8A8F98">${m.notes}</span>` : '');
+    } catch (e) {
+      status.className = 'status err';
+      status.textContent = 'Failed: ' + e.message +
+        (location.hostname === 'localhost' ? ' (the /api endpoint only runs on Vercel or `vercel dev`).' : '');
+    } finally {
+      goBtn.disabled = false;
+    }
+  });
+})();
+</script>
 </body></html>

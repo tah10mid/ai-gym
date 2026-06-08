@@ -1,0 +1,9 @@
+{
+  "name": "ai-gym",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Gym Trainer — InBody-driven diet + workout, with a Claude-powered OCR endpoint.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest"
+  }
+}

@@ -28,5 +28,12 @@ Open the diet or workout page and use the **⚙ INBODY** panel (bottom-right) to
 ## Exercise GIFs
 `5-workout.html` loads demo GIFs from **ExerciseDB** (RapidAPI). Paste your free key into the `RAPIDAPI_KEY` constant near the bottom of that file.
 
+## Backend — real InBody OCR (`/api/analyze`)
+A Vercel serverless function (`api/analyze.js`) reads an uploaded InBody report image with **Claude Opus 4.8 (vision)** and returns structured metrics, which `plan-engine.js` turns into the diet + workout.
+
+- Set **`ANTHROPIC_API_KEY`** in Vercel → Project → Settings → Environment Variables.
+- The **Upload & Review** page has an "Analyze InBody report (AI)" panel: pick a photo → it calls `/api/analyze` → the values persist (localStorage) and drive both plans.
+- The `/api` endpoint only runs on Vercel (or locally via `vercel dev`) — the plain `python -m http.server` preview can't serve it.
+
 ## Deploy
 Static site — GitHub Pages from `main` / root. Enable in **Settings → Pages → Source: main /(root)**.
